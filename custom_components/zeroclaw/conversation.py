@@ -43,7 +43,7 @@ class ZeroClawConversationEntity(conversation.ConversationEntity):
         self._attr_device_info = {
             "identifiers": {(DOMAIN, entry.entry_id)},
             "name": "ZeroClaw Assistant",
-            "manufacturer": "ZeroClaw Labs",
+            "manufacturer": "Slayer",
         }
 
     @property

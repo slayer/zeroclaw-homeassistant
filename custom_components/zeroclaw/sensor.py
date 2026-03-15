@@ -40,7 +40,7 @@ class ZeroClawStatusSensor(CoordinatorEntity[ZeroClawCoordinator], SensorEntity)
         self._attr_device_info = {
             "identifiers": {(DOMAIN, entry.entry_id)},
             "name": "ZeroClaw Assistant",
-            "manufacturer": "ZeroClaw Labs",
+            "manufacturer": "Slayer",
         }
 
     @property
@@ -75,7 +75,7 @@ class ZeroClawActiveModelSensor(CoordinatorEntity[ZeroClawCoordinator], SensorEn
         self._attr_device_info = {
             "identifiers": {(DOMAIN, entry.entry_id)},
             "name": "ZeroClaw Assistant",
-            "manufacturer": "ZeroClaw Labs",
+            "manufacturer": "Slayer",
         }
 
     @property

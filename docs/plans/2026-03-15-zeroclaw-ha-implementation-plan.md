@@ -23,7 +23,7 @@
 ```yaml
 name: ZeroClaw Assistant Add-ons
 url: https://github.com/zeroclaw-labs/zeroclaw-homeassistant
-maintainer: ZeroClaw Labs
+maintainer: Slayer
 ```
 
 **Step 2: Create .gitignore**
@@ -916,7 +916,7 @@ class ZeroClawConnectedSensor(CoordinatorEntity[ZeroClawCoordinator], BinarySens
         self._attr_device_info = {
             "identifiers": {(DOMAIN, entry.entry_id)},
             "name": "ZeroClaw Assistant",
-            "manufacturer": "ZeroClaw Labs",
+            "manufacturer": "Slayer",
         }
 
     @property
@@ -986,7 +986,7 @@ class ZeroClawStatusSensor(CoordinatorEntity[ZeroClawCoordinator], SensorEntity)
         self._attr_device_info = {
             "identifiers": {(DOMAIN, entry.entry_id)},
             "name": "ZeroClaw Assistant",
-            "manufacturer": "ZeroClaw Labs",
+            "manufacturer": "Slayer",
         }
 
     @property
@@ -1023,7 +1023,7 @@ class ZeroClawActiveModelSensor(CoordinatorEntity[ZeroClawCoordinator], SensorEn
         self._attr_device_info = {
             "identifiers": {(DOMAIN, entry.entry_id)},
             "name": "ZeroClaw Assistant",
-            "manufacturer": "ZeroClaw Labs",
+            "manufacturer": "Slayer",
         }
 
     @property
@@ -1107,7 +1107,7 @@ class ZeroClawConversationEntity(conversation.ConversationEntity):
         self._attr_device_info = {
             "identifiers": {(DOMAIN, entry.entry_id)},
             "name": "ZeroClaw Assistant",
-            "manufacturer": "ZeroClaw Labs",
+            "manufacturer": "Slayer",
         }
 
     @property
