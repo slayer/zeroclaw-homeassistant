@@ -4,14 +4,13 @@ FROM ${BUILD_FROM}
 ARG ZEROCLAW_VERSION=latest
 
 # jq: parse /data/options.json, curl: download binary, ca-certificates: TLS
-RUN apk add --no-cache jq curl ca-certificates
+RUN apt-get update && apt-get install -y --no-install-recommends jq curl ca-certificates && rm -rf /var/lib/apt/lists/*
 
 # Download ZeroClaw binary matching container architecture
 RUN set -eux; \
     case "$(uname -m)" in \
-      x86_64)  ARCH="x86_64-unknown-linux-musl" ;; \
-      aarch64) ARCH="aarch64-unknown-linux-musl" ;; \
-      armv7l)  ARCH="armv7-unknown-linux-musleabihf" ;; \
+      x86_64)  ARCH="x86_64-unknown-linux-gnu" ;; \
+      aarch64) ARCH="aarch64-unknown-linux-gnu" ;; \
       *)       echo "Unsupported arch: $(uname -m)" && exit 1 ;; \
     esac; \
     if [ "${ZEROCLAW_VERSION}" = "latest" ]; then \
