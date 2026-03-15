@@ -130,4 +130,3 @@ class ZeroClawApiClient:
             raise ZeroClawAuthError("Invalid or expired token")
         resp.raise_for_status()
         return await resp.json()
-

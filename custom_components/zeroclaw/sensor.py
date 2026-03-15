@@ -19,10 +19,12 @@ async def async_setup_entry(
 ) -> None:
     """Set up ZeroClaw sensors."""
     coordinator = hass.data[DOMAIN][entry.entry_id][DATA_COORDINATOR]
-    async_add_entities([
-        ZeroClawStatusSensor(coordinator, entry),
-        ZeroClawActiveModelSensor(coordinator, entry),
-    ])
+    async_add_entities(
+        [
+            ZeroClawStatusSensor(coordinator, entry),
+            ZeroClawActiveModelSensor(coordinator, entry),
+        ]
+    )
 
 
 class ZeroClawStatusSensor(CoordinatorEntity[ZeroClawCoordinator], SensorEntity):
@@ -32,9 +34,7 @@ class ZeroClawStatusSensor(CoordinatorEntity[ZeroClawCoordinator], SensorEntity)
     _attr_translation_key = "status"
     _attr_icon = "mdi:robot"
 
-    def __init__(
-        self, coordinator: ZeroClawCoordinator, entry: ConfigEntry
-    ) -> None:
+    def __init__(self, coordinator: ZeroClawCoordinator, entry: ConfigEntry) -> None:
         super().__init__(coordinator)
         self._attr_unique_id = f"{entry.entry_id}_status"
         self._attr_device_info = {
@@ -69,9 +69,7 @@ class ZeroClawActiveModelSensor(CoordinatorEntity[ZeroClawCoordinator], SensorEn
     _attr_translation_key = "active_model"
     _attr_icon = "mdi:brain"
 
-    def __init__(
-        self, coordinator: ZeroClawCoordinator, entry: ConfigEntry
-    ) -> None:
+    def __init__(self, coordinator: ZeroClawCoordinator, entry: ConfigEntry) -> None:
         super().__init__(coordinator)
         self._attr_unique_id = f"{entry.entry_id}_active_model"
         self._attr_device_info = {

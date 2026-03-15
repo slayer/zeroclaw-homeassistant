@@ -8,7 +8,12 @@ import voluptuous as vol
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, CONF_PORT
-from homeassistant.core import HomeAssistant, ServiceCall, ServiceResponse, SupportsResponse
+from homeassistant.core import (
+    HomeAssistant,
+    ServiceCall,
+    ServiceResponse,
+    SupportsResponse,
+)
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
@@ -26,9 +31,7 @@ from .coordinator import ZeroClawCoordinator
 _LOGGER = logging.getLogger(__name__)
 
 SERVICE_SEND_MESSAGE = "send_message"
-SERVICE_SEND_MESSAGE_SCHEMA = vol.Schema(
-    {vol.Required("message"): cv.string}
-)
+SERVICE_SEND_MESSAGE_SCHEMA = vol.Schema({vol.Required("message"): cv.string})
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
@@ -54,13 +57,16 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     # Register service once (shared across all entries)
     if not hass.services.has_service(DOMAIN, SERVICE_SEND_MESSAGE):
+
         async def handle_send_message(call: ServiceCall) -> ServiceResponse:
             """Handle send_message service call."""
             message = call.data["message"]
             for entry_data in hass.data[DOMAIN].values():
                 if DATA_CLIENT in entry_data:
                     try:
-                        result = await entry_data[DATA_CLIENT].async_send_message(message)
+                        result = await entry_data[DATA_CLIENT].async_send_message(
+                            message
+                        )
                     except ZeroClawConnectionError as err:
                         raise HomeAssistantError(
                             f"Cannot reach ZeroClaw gateway: {err}"

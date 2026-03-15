@@ -1,0 +1,64 @@
+name: Validate
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  addon-config:
+    name: Addon config
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate addon config YAML
+        run: python3 -c "import yaml; yaml.safe_load(open('zeroclaw_assistant/config.yaml')); yaml.safe_load(open('zeroclaw_assistant/build.yaml')); print('Addon YAML OK')"
+      - name: Validate JSON files
+        run: python3 -c "import json; json.load(open('custom_components/zeroclaw/manifest.json')); json.load(open('custom_components/zeroclaw/strings.json')); print('JSON OK')"
+
+  python-check:
+    name: Python syntax & lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile check
+        run: python3 -c "import py_compile, glob; [py_compile.compile(f, doraise=True) for f in glob.glob('custom_components/zeroclaw/*.py')]"
+      - name: Install ruff
+        run: pip install ruff
+      - name: Ruff lint
+        run: ruff check custom_components/
+      - name: Ruff format check
+        run: ruff format --check custom_components/
+
+  hacs:
+    name: HACS validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hacs/action@main
+        with:
+          category: integration
+
+  hassfest:
+    name: Hassfest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: home-assistant/actions/hassfest@master
+
+  docker-build:
+    name: Addon Docker build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build addon image
+        run: |
+          docker build \
+            --build-arg BUILD_FROM=ghcr.io/home-assistant/amd64-base-debian:bookworm \
+            --build-arg ZEROCLAW_VERSION=latest \
+            -t zeroclaw-test \
+            zeroclaw_assistant/
