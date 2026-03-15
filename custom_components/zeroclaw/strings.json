@@ -1,0 +1,50 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to ZeroClaw",
+        "description": "Enter the ZeroClaw gateway address and pairing code. Find the pairing code in ZeroClaw logs or run `zeroclaw gateway` to see it.",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "pairing_code": "Pairing Code"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Cannot connect to ZeroClaw gateway",
+      "invalid_auth": "Invalid pairing code",
+      "unknown": "Unexpected error"
+    },
+    "abort": {
+      "already_configured": "This ZeroClaw instance is already configured"
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "connected": {
+        "name": "Connected"
+      }
+    },
+    "sensor": {
+      "status": {
+        "name": "Status"
+      },
+      "active_model": {
+        "name": "Active Model"
+      }
+    }
+  },
+  "services": {
+    "send_message": {
+      "name": "Send Message",
+      "description": "Send a message to ZeroClaw and get a response.",
+      "fields": {
+        "message": {
+          "name": "Message",
+          "description": "The message to send"
+        }
+      }
+    }
+  }
+}
