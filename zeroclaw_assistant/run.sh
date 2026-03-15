@@ -44,4 +44,4 @@ EOF
 bashio::log.info "Starting ZeroClaw daemon (provider=${LLM_PROVIDER}, port=${GATEWAY_PORT})"
 
 # --- Start ZeroClaw ---
-exec zeroclaw daemon --config "${CONFIG_FILE}"
+exec zeroclaw daemon --config-dir "${CONFIG_DIR}"
