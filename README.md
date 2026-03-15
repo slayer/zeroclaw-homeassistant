@@ -15,7 +15,7 @@ Run [ZeroClaw](https://github.com/zeroclaw-labs/zeroclaw) AI agent runtime as a 
 2. Click the **⋮** menu (top right) → **Repositories**
 3. Add this repository URL:
    ```
-   https://github.com/zeroclaw-labs/zeroclaw-homeassistant
+   https://github.com/slayer/zeroclaw-homeassistant
    ```
 4. Find **ZeroClaw Assistant** in the store and click **Install**
 5. Go to the addon **Configuration** tab and set:
@@ -32,7 +32,7 @@ Run [ZeroClaw](https://github.com/zeroclaw-labs/zeroclaw) AI agent runtime as a 
 1. In HACS, go to **Integrations → ⋮ → Custom repositories**
 2. Add this repository URL with category **Integration**:
    ```
-   https://github.com/zeroclaw-labs/zeroclaw-homeassistant
+   https://github.com/slayer/zeroclaw-homeassistant
    ```
 3. Search for **ZeroClaw Assistant** and install it
 4. Restart Home Assistant
