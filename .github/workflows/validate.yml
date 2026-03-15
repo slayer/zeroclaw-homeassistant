@@ -58,7 +58,7 @@ jobs:
       - name: Build addon image
         run: |
           docker build \
-            --build-arg BUILD_FROM=ghcr.io/home-assistant/amd64-base-debian:bookworm \
+            --build-arg BUILD_FROM=ghcr.io/home-assistant/amd64-base-debian:trixie \
             --build-arg ZEROCLAW_VERSION=latest \
             -t zeroclaw-test \
             zeroclaw_assistant/
