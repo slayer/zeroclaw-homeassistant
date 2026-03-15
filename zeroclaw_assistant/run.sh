@@ -38,8 +38,13 @@ fi
 cat >> "${CONFIG_FILE}" <<EOF
 
 [gateway]
-bind = "0.0.0.0:${GATEWAY_PORT}"
+host = "0.0.0.0"
+port = ${GATEWAY_PORT}
+allow_public_bind = true
 EOF
+
+# Restrict config file permissions (contains API key)
+chmod 600 "${CONFIG_FILE}"
 
 bashio::log.info "Starting ZeroClaw daemon (provider=${LLM_PROVIDER}, port=${GATEWAY_PORT})"
 
