@@ -16,9 +16,7 @@ DEFAULT_HOST = "127.0.0.1"
 DEFAULT_PORT = 42617
 POLL_INTERVAL_SECONDS = 30
 
-# Config keys
-CONF_HOST = "host"
-CONF_PORT = "port"
+# Config keys (CONF_HOST and CONF_PORT come from homeassistant.const)
 CONF_TOKEN = "token"
 CONF_PAIRING_CODE = "pairing_code"
 

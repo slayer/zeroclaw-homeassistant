@@ -55,14 +55,9 @@ class ZeroClawApiClient:
             headers["Authorization"] = f"Bearer {self._token}"
         return headers
 
-    async def _get_session(self) -> aiohttp.ClientSession:
-        if self._session is None or self._session.closed:
-            self._session = aiohttp.ClientSession()
-        return self._session
-
     async def async_pair(self, pairing_code: str) -> str:
         """Exchange pairing code for Bearer token. Returns the token."""
-        session = await self._get_session()
+        session = self._session
         try:
             resp = await session.post(
                 f"{self._base_url}{ENDPOINT_PAIR}",
@@ -86,7 +81,7 @@ class ZeroClawApiClient:
 
     async def async_get_health(self) -> dict[str, Any]:
         """GET /health — no auth required."""
-        session = await self._get_session()
+        session = self._session
         try:
             resp = await session.get(
                 f"{self._base_url}{ENDPOINT_HEALTH}",
@@ -101,7 +96,7 @@ class ZeroClawApiClient:
 
     async def async_get_status(self) -> dict[str, Any]:
         """GET /api/status — requires auth."""
-        session = await self._get_session()
+        session = self._session
         try:
             resp = await session.get(
                 f"{self._base_url}{ENDPOINT_STATUS}",
@@ -119,7 +114,7 @@ class ZeroClawApiClient:
 
     async def async_send_message(self, message: str) -> dict[str, Any]:
         """POST /webhook — send message, get LLM response."""
-        session = await self._get_session()
+        session = self._session
         try:
             resp = await session.post(
                 f"{self._base_url}{ENDPOINT_WEBHOOK}",
@@ -136,7 +131,3 @@ class ZeroClawApiClient:
         resp.raise_for_status()
         return await resp.json()
 
-    async def async_close(self) -> None:
-        """Close the HTTP session."""
-        if self._session and not self._session.closed:
-            await self._session.close()

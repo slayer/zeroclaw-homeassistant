@@ -9,6 +9,7 @@ import voluptuous as vol
 
 from homeassistant.config_entries import ConfigFlow, ConfigFlowResult
 from homeassistant.const import CONF_HOST, CONF_PORT
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .api import (
     ZeroClawApiClient,
@@ -50,7 +51,12 @@ class ZeroClawConfigFlow(ConfigFlow, domain=DOMAIN):
             port = user_input[CONF_PORT]
             pairing_code = user_input[CONF_PAIRING_CODE]
 
-            client = ZeroClawApiClient(host=host, port=port)
+            # Check for duplicates before wasting a pairing code
+            await self.async_set_unique_id(f"{host}:{port}")
+            self._abort_if_unique_id_configured()
+
+            session = async_get_clientsession(self.hass)
+            client = ZeroClawApiClient(host=host, port=port, session=session)
             try:
                 token = await client.async_pair(pairing_code)
             except ZeroClawConnectionError:
@@ -61,9 +67,6 @@ class ZeroClawConfigFlow(ConfigFlow, domain=DOMAIN):
                 _LOGGER.exception("Unexpected error during pairing")
                 errors["base"] = "unknown"
             else:
-                await self.async_set_unique_id(f"{host}:{port}")
-                self._abort_if_unique_id_configured()
-
                 return self.async_create_entry(
                     title=f"ZeroClaw ({host}:{port})",
                     data={
@@ -72,8 +75,6 @@ class ZeroClawConfigFlow(ConfigFlow, domain=DOMAIN):
                         CONF_TOKEN: token,
                     },
                 )
-            finally:
-                await client.async_close()
 
         return self.async_show_form(
             step_id="user",

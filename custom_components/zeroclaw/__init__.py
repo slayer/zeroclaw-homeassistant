@@ -3,16 +3,17 @@
 from __future__ import annotations
 
 import logging
-from typing import Any
 
 import voluptuous as vol
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, CONF_PORT
 from homeassistant.core import HomeAssistant, ServiceCall, ServiceResponse, SupportsResponse
+from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import config_validation as cv
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
-from .api import ZeroClawApiClient
+from .api import ZeroClawApiClient, ZeroClawConnectionError, ZeroClawAuthError
 from .const import (
     CONF_TOKEN,
     DATA_CLIENT,
@@ -32,11 +33,12 @@ SERVICE_SEND_MESSAGE_SCHEMA = vol.Schema(
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up ZeroClaw from a config entry."""
+    session = async_get_clientsession(hass)
     client = ZeroClawApiClient(
         host=entry.data[CONF_HOST],
         port=entry.data[CONF_PORT],
         token=entry.data[CONF_TOKEN],
-        session=None,
+        session=session,
     )
 
     coordinator = ZeroClawCoordinator(hass, client)
@@ -57,12 +59,21 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             message = call.data["message"]
             for entry_data in hass.data[DOMAIN].values():
                 if DATA_CLIENT in entry_data:
-                    result = await entry_data[DATA_CLIENT].async_send_message(message)
+                    try:
+                        result = await entry_data[DATA_CLIENT].async_send_message(message)
+                    except ZeroClawConnectionError as err:
+                        raise HomeAssistantError(
+                            f"Cannot reach ZeroClaw gateway: {err}"
+                        ) from err
+                    except ZeroClawAuthError as err:
+                        raise HomeAssistantError(
+                            f"ZeroClaw authentication failed: {err}"
+                        ) from err
                     return {
                         "response": result.get("response", ""),
                         "model": result.get("model", ""),
                     }
-            return {"response": "No ZeroClaw instance available", "model": ""}
+            raise HomeAssistantError("No ZeroClaw instance available")
 
         hass.services.async_register(
             DOMAIN,
@@ -80,8 +91,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
 
     if unload_ok:
-        entry_data = hass.data[DOMAIN].pop(entry.entry_id)
-        await entry_data[DATA_CLIENT].async_close()
+        hass.data[DOMAIN].pop(entry.entry_id)
 
     # Remove service if no entries left
     if not hass.data.get(DOMAIN):
