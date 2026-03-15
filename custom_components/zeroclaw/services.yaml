@@ -1,0 +1,10 @@
+send_message:
+  name: Send Message
+  description: Send a message to ZeroClaw and get a response.
+  fields:
+    message:
+      name: Message
+      description: The message to send to ZeroClaw
+      required: true
+      selector:
+        text:
