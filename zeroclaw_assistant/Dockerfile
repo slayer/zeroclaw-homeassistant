@@ -1,7 +1,7 @@
 ARG BUILD_FROM
 FROM ${BUILD_FROM}
 
-ARG ZEROCLAW_VERSION=latest
+ARG ZEROCLAW_VERSION=v0.4.0-beta.4
 
 # jq: parse /data/options.json, curl: download binary, ca-certificates: TLS
 RUN apt-get update && apt-get install -y --no-install-recommends jq curl ca-certificates && rm -rf /var/lib/apt/lists/*
@@ -13,11 +13,7 @@ RUN set -eux; \
       aarch64) ARCH="aarch64-unknown-linux-gnu" ;; \
       *)       echo "Unsupported arch: $(uname -m)" && exit 1 ;; \
     esac; \
-    if [ "${ZEROCLAW_VERSION}" = "latest" ]; then \
-      DOWNLOAD_URL="https://github.com/slayer/zeroclaw/releases/latest/download/zeroclaw-${ARCH}.tar.gz"; \
-    else \
-      DOWNLOAD_URL="https://github.com/slayer/zeroclaw/releases/download/${ZEROCLAW_VERSION}/zeroclaw-${ARCH}.tar.gz"; \
-    fi; \
+    DOWNLOAD_URL="https://github.com/slayer/zeroclaw/releases/download/${ZEROCLAW_VERSION}/zeroclaw-${ARCH}.tar.gz"; \
     curl -fsSL "${DOWNLOAD_URL}" -o /tmp/zeroclaw.tar.gz && \
     tar xzf /tmp/zeroclaw.tar.gz -C /usr/local/bin/ && \
     chmod +x /usr/local/bin/zeroclaw && \

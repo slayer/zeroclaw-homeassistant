@@ -1,5 +1,5 @@
 name: ZeroClaw Assistant
-version: "0.1.7"
+version: "0.1.8"
 slug: zeroclaw_assistant
 description: Run ZeroClaw AI agent runtime as a Home Assistant addon
 url: https://github.com/slayer/zeroclaw
@@ -19,7 +19,7 @@ map:
   - addon_config:rw
   - share:rw
 options:
-  zeroclaw_version: "latest"
+  zeroclaw_version: "v0.4.0-beta.4"
   llm_provider: "openrouter"
   api_key: ""
   default_model: ""
