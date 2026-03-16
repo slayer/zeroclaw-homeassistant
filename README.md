@@ -6,8 +6,12 @@ Run [ZeroClaw](https://github.com/zeroclaw-labs/zeroclaw) AI agent runtime as a 
 
 ## Components
 
-- **Addon** (`zeroclaw_assistant/`) — Docker container running the ZeroClaw binary
-- **Integration** (`custom_components/zeroclaw/`) — HA custom integration providing conversation agent, sensors, and services
+Both components are required:
+
+- **Addon** (`zeroclaw_assistant/`) — Docker container that runs the ZeroClaw daemon (the AI runtime)
+- **Integration** (`custom_components/zeroclaw/`) — Connects HA to the daemon, providing conversation agent, sensors, and services
+
+The addon is the engine; the integration is how HA talks to it.
 
 ## Installation
 
@@ -25,7 +29,6 @@ Run [ZeroClaw](https://github.com/zeroclaw-labs/zeroclaw) AI agent runtime as a 
    - **api_key** — your API key for the provider
    - **default_model** — (optional) model identifier (e.g. `anthropic/claude-sonnet-4-20250514`)
 6. Click **Start**
-7. Check the **Log** tab — look for the **pairing code** (you'll need it in the next step)
 
 ### 2. Install the Integration
 
@@ -48,11 +51,8 @@ Run [ZeroClaw](https://github.com/zeroclaw-labs/zeroclaw) AI agent runtime as a 
 
 1. Go to **Settings → Devices & Services → Add Integration**
 2. Search for **ZeroClaw**
-3. Enter:
-   - **Host** — `127.0.0.1` (if addon is running locally)
-   - **Port** — `42617` (default)
-   - **Pairing Code** — the code from the addon logs
-4. Click **Submit**
+3. If the addon is running locally, setup completes automatically (the integration reads the addon's pre-seeded bearer token)
+4. For remote installs, enter host, port, and the pairing code from the addon logs
 
 ## What You Get
 
@@ -108,9 +108,10 @@ Returns `response` (LLM answer) and `model` (model used).
 - Check the addon is running (Settings → Add-ons → ZeroClaw Assistant)
 - Verify the port matches between addon config and integration setup
 
-**"Invalid pairing code"**
+**"Invalid pairing code"** (remote installs only)
 - Pairing codes are single-use. Restart the addon to generate a new one
 - Check the addon logs for the current code
 
-**Integration becomes unavailable after addon restart**
-- ZeroClaw may regenerate tokens on restart. Delete and re-add the integration with the new pairing code
+**Integration setup doesn't auto-detect the addon**
+- The addon must be running before adding the integration
+- Auto-detection only works when the addon runs on the same HA instance
