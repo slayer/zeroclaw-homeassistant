@@ -11,3 +11,4 @@ build/
 logs/
 *.log
 .mcp.json
+.envrc

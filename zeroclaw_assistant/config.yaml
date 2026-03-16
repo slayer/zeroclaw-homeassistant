@@ -1,5 +1,5 @@
 name: ZeroClaw Assistant
-version: "0.1.15"
+version: "0.1.16"
 slug: zeroclaw_assistant
 description: Run ZeroClaw AI agent runtime as a Home Assistant addon
 url: https://github.com/slayer/zeroclaw
@@ -23,7 +23,7 @@ options:
   env_vars: []
 schema:
   zeroclaw_version: str
-  llm_provider: list(openrouter|anthropic|openai|groq|mistral|deepseek|together|fireworks|ollama|custom)
+  llm_provider: list(openrouter|anthropic|openai|groq|mistral|deepseek|together|fireworks|ollama|gemini|bedrock|qwen|venice|cloudflare|moonshot|xai|novita|perplexity|cohere|lmstudio|nvidia|custom)
   api_key: password
   default_model: str?
   gateway_port: int(1024,65535)
