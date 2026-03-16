@@ -1,7 +1,7 @@
 ARG BUILD_FROM
 FROM ${BUILD_FROM}
 
-ARG ZEROCLAW_VERSION=v0.4.0-beta.4
+ARG ZEROCLAW_VERSION=v0.4.0-beta.5
 
 # jq: parse /data/options.json, curl: download binary, ca-certificates: TLS
 RUN apt-get update && apt-get install -y --no-install-recommends jq curl ca-certificates && rm -rf /var/lib/apt/lists/*
