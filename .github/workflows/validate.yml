@@ -11,7 +11,7 @@ jobs:
     name: Addon config
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Validate addon config YAML
         run: python3 -c "import yaml; yaml.safe_load(open('zeroclaw_assistant/config.yaml')); yaml.safe_load(open('zeroclaw_assistant/build.yaml')); print('Addon YAML OK')"
       - name: Validate JSON files
@@ -21,8 +21,8 @@ jobs:
     name: Python syntax & lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
       - name: Compile check
@@ -38,7 +38,7 @@ jobs:
     name: HACS validation
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: hacs/action@main
         with:
           category: integration
@@ -47,14 +47,14 @@ jobs:
     name: Hassfest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: home-assistant/actions/hassfest@master
 
   docker-build:
     name: Addon Docker build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Build addon image
         run: |
           docker build \
