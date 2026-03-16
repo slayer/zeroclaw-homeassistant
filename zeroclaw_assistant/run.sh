@@ -50,6 +50,7 @@ cat >> "${CONFIG_FILE}" <<EOF
 host = "0.0.0.0"
 port = ${GATEWAY_PORT}
 allow_public_bind = true
+require_pairing = false
 paired_tokens = ["${BEARER_TOKEN}"]
 EOF
 
