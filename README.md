@@ -2,6 +2,8 @@
 
 Run [ZeroClaw](https://github.com/zeroclaw-labs/zeroclaw) AI agent runtime as a Home Assistant addon, with a custom integration for conversation, sensors, and service calls.
 
+> **Note:** This addon uses binaries from the [slayer/zeroclaw](https://github.com/slayer/zeroclaw) fork, which adds `gateway.path_prefix` support required for Home Assistant ingress. See [slayer/zeroclaw#1](https://github.com/slayer/zeroclaw/pull/1) for details.
+
 ## Components
 
 - **Addon** (`zeroclaw_assistant/`) — Docker container running the ZeroClaw binary
