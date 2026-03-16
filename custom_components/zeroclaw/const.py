@@ -4,6 +4,7 @@ PLATFORMS = ["sensor", "binary_sensor", "conversation"]
 
 # Addon discovery
 ADDON_SLUG = "zeroclaw_assistant"
+ADDON_TOKEN_PATH = "/config/zeroclaw/.bearer_token"
 
 # API endpoints
 ENDPOINT_HEALTH = "/health"

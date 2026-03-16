@@ -1,7 +1,7 @@
 {
   "config": {
     "step": {
-      "user": {
+      "manual": {
         "title": "Connect to ZeroClaw",
         "description": "Enter the ZeroClaw gateway address and pairing code. Find the pairing code in ZeroClaw logs or run `zeroclaw gateway` to see it.",
         "data": {
