@@ -47,9 +47,8 @@ fi
 cat >> "${CONFIG_FILE}" <<EOF
 
 [gateway]
-host = "0.0.0.0"
+host = "127.0.0.1"
 port = ${GATEWAY_PORT}
-allow_public_bind = true
 require_pairing = false
 paired_tokens = ["${BEARER_TOKEN}"]
 EOF
