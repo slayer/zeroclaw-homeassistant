@@ -44,6 +44,9 @@ if [ -n "${DEFAULT_MODEL}" ]; then
   echo "default_model = \"${DEFAULT_MODEL}\"" >> "${CONFIG_FILE}"
 fi
 
+# --- Resolve HA ingress path prefix ---
+INGRESS_ENTRY=$(bashio::addon.ingress_entry 2>/dev/null || true)
+
 cat >> "${CONFIG_FILE}" <<EOF
 
 [gateway]
@@ -52,6 +55,11 @@ port = ${GATEWAY_PORT}
 allow_public_bind = true
 paired_tokens = ["${BEARER_TOKEN}"]
 EOF
+
+if [ -n "${INGRESS_ENTRY}" ]; then
+  echo "path_prefix = \"${INGRESS_ENTRY}\"" >> "${CONFIG_FILE}"
+  bashio::log.info "Ingress enabled at ${INGRESS_ENTRY}"
+fi
 
 chmod 600 "${CONFIG_FILE}"
 

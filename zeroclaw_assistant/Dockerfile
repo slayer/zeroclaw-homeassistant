@@ -14,9 +14,9 @@ RUN set -eux; \
       *)       echo "Unsupported arch: $(uname -m)" && exit 1 ;; \
     esac; \
     if [ "${ZEROCLAW_VERSION}" = "latest" ]; then \
-      DOWNLOAD_URL="https://github.com/zeroclaw-labs/zeroclaw/releases/latest/download/zeroclaw-${ARCH}.tar.gz"; \
+      DOWNLOAD_URL="https://github.com/slayer/zeroclaw/releases/latest/download/zeroclaw-${ARCH}.tar.gz"; \
     else \
-      DOWNLOAD_URL="https://github.com/zeroclaw-labs/zeroclaw/releases/download/${ZEROCLAW_VERSION}/zeroclaw-${ARCH}.tar.gz"; \
+      DOWNLOAD_URL="https://github.com/slayer/zeroclaw/releases/download/${ZEROCLAW_VERSION}/zeroclaw-${ARCH}.tar.gz"; \
     fi; \
     curl -fsSL "${DOWNLOAD_URL}" -o /tmp/zeroclaw.tar.gz && \
     tar xzf /tmp/zeroclaw.tar.gz -C /usr/local/bin/ && \
