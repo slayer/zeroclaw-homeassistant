@@ -21,6 +21,7 @@ Run [ZeroClaw](https://github.com/zeroclaw-labs/zeroclaw) AI agent runtime as a 
    - **default_model** — (optional) model identifier (e.g. `anthropic/claude-sonnet-4-20250514`)
 6. Click **Start**
 7. Install the [ZeroClaw integration](https://github.com/slayer/zeroclaw-homeassistant-integration) to connect HA to the addon
+8. (Recommended) Install the [Model Context Protocol Server](https://www.home-assistant.io/integrations/mcp_server/) integration to allow ZeroClaw to control your home. The addon auto-detects it on startup and enables home control tools automatically
 
 ## Configuration Options
 
