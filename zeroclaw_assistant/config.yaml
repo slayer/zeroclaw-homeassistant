@@ -1,5 +1,5 @@
 name: ZeroClaw Assistant
-version: "0.1.21"
+version: "0.1.22"
 slug: zeroclaw_assistant
 description: Run ZeroClaw AI agent runtime as a Home Assistant addon
 url: https://github.com/slayer/zeroclaw

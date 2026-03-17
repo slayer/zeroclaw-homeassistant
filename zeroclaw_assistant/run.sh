@@ -55,16 +55,26 @@ paired_tokens = ["${BEARER_TOKEN}"]
 webhook_tools = true
 EOF
 
-# --- Auto-detect HA MCP server ---
+# --- Auto-detect HA MCP server (retry up to 60s for HA to finish starting) ---
 if [ -n "${SUPERVISOR_TOKEN:-}" ]; then
-  # Check if MCP server integration is installed
-  MCP_CHECK=$(curl -s -o /dev/null -w "%{http_code}" \
-    -X POST "http://supervisor/core/api/mcp" \
-    -H "Authorization: Bearer ${SUPERVISOR_TOKEN}" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"zeroclaw","version":"0.1"}}}' \
-    2>/dev/null || echo "000")
+  MCP_CHECK="000"
+  for attempt in $(seq 1 12); do
+    MCP_CHECK=$(curl -s -o /dev/null -w "%{http_code}" \
+      -X POST "http://supervisor/core/api/mcp" \
+      -H "Authorization: Bearer ${SUPERVISOR_TOKEN}" \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"zeroclaw","version":"0.1"}}}' \
+      2>/dev/null || echo "000")
+    if [ "${MCP_CHECK}" = "200" ]; then
+      break
+    fi
+    # HA might still be starting — wait before retrying
+    if [ "${attempt}" -lt 12 ]; then
+      bashio::log.info "Waiting for HA MCP server (attempt ${attempt}/12, HTTP ${MCP_CHECK})..."
+      sleep 5
+    fi
+  done
   if [ "${MCP_CHECK}" = "200" ]; then
     bashio::log.info "HA MCP server detected — enabling home control tools"
     cat >> "${CONFIG_FILE}" <<MCPEOF
