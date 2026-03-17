@@ -52,6 +52,7 @@ port = ${GATEWAY_PORT}
 allow_public_bind = true
 require_pairing = false
 paired_tokens = ["${BEARER_TOKEN}"]
+webhook_tools = true
 EOF
 
 # --- Auto-detect HA MCP server ---
