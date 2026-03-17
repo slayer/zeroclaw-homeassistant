@@ -54,6 +54,34 @@ require_pairing = false
 paired_tokens = ["${BEARER_TOKEN}"]
 EOF
 
+# --- Auto-detect HA MCP server ---
+if [ -n "${SUPERVISOR_TOKEN:-}" ]; then
+  # Check if MCP server integration is installed
+  MCP_CHECK=$(curl -s -o /dev/null -w "%{http_code}" \
+    -X POST "http://supervisor/core/api/mcp" \
+    -H "Authorization: Bearer ${SUPERVISOR_TOKEN}" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"zeroclaw","version":"0.1"}}}' \
+    2>/dev/null || echo "000")
+  if [ "${MCP_CHECK}" = "200" ]; then
+    bashio::log.info "HA MCP server detected — enabling home control tools"
+    cat >> "${CONFIG_FILE}" <<MCPEOF
+
+[mcp]
+enabled = true
+
+[[mcp.servers]]
+name = "home-assistant"
+transport = "http"
+url = "http://supervisor/core/api/mcp"
+headers = { "Authorization" = "Bearer ${SUPERVISOR_TOKEN}" }
+MCPEOF
+  else
+    bashio::log.info "HA MCP server not found (HTTP ${MCP_CHECK}) — skipping MCP config"
+  fi
+fi
+
 chmod 600 "${CONFIG_FILE}"
 
 bashio::log.info "Starting ZeroClaw daemon (provider=${LLM_PROVIDER}, port=${GATEWAY_PORT})"
