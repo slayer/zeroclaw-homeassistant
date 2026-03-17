@@ -2,4 +2,4 @@ build_from:
   amd64: ghcr.io/home-assistant/amd64-base-debian:trixie
   aarch64: ghcr.io/home-assistant/aarch64-base-debian:trixie
 args:
-  ZEROCLAW_VERSION: "v0.4.0-beta.5"
+  ZEROCLAW_VERSION: "v0.4.3-beta.8"
