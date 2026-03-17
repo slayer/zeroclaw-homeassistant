@@ -1,5 +1,5 @@
 name: ZeroClaw Assistant
-version: "0.1.17"
+version: "0.1.18"
 slug: zeroclaw_assistant
 description: Run ZeroClaw AI agent runtime as a Home Assistant addon
 url: https://github.com/slayer/zeroclaw
@@ -12,6 +12,10 @@ init: false
 panel_icon: mdi:hook
 ingress: true
 ingress_port: 42617
+ports:
+  42617/tcp: 42617
+ports_description:
+  42617/tcp: ZeroClaw Gateway
 map:
   - addon_config:rw
   - share:rw
